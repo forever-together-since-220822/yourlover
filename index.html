@@ -170,6 +170,21 @@
       100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
     }
 
+    /* ── Music toggle button ── */
+    #music-btn {
+      position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+      background: rgba(255,255,255,0.9);
+      border: 1.5px solid var(--petal);
+      border-radius: 50%;
+      width: 48px; height: 48px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(244,63,114,0.2);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    #music-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(244,63,114,0.3); }
+
     @media (max-width: 480px) {
       .card { padding: 36px 22px 40px; }
       .btn  { padding: 12px 28px; font-size: 0.95rem; }
@@ -210,22 +225,50 @@
     </div>
   </div>
 
-  <!-- ✏️ Replace song.mp3 with your audio file path -->
-  <audio id="loveSong" src="song.mp3" preload="auto" loop></audio>
+  <!-- Background music: Dandelions - Ruth B. -->
+  <audio id="loveSong" 
+    src="https://archive.org/download/ruth-b.-dandelions-lyrics_202208/Ruth%20B.%20-%20Dandelions%20%28Lyrics%29.mp3"
+    preload="auto" loop></audio>
+
+  <!-- Music toggle button -->
+  <button id="music-btn" title="Toggle music">🔊</button>
 
   <script>
     const loveSong = document.getElementById('loveSong');
+    const musicBtn = document.getElementById('music-btn');
+    let songStarted = false;
 
-    // Play song on first interaction anywhere on the page (bypasses browser autoplay block)
+    // Start playing on very first interaction anywhere on page
     function startSong() {
-      loveSong.currentTime = 0;
-      loveSong.volume = 1;
+      if (songStarted) return;
+      songStarted = true;
+      loveSong.volume = 0.6;
       loveSong.play().catch(() => {});
-      document.removeEventListener('click',     startSong);
+      document.removeEventListener('click',      startSong);
       document.removeEventListener('touchstart', startSong);
+      document.removeEventListener('keydown',    startSong);
+      document.removeEventListener('mousemove',  startSong);
     }
     document.addEventListener('click',      startSong);
     document.addEventListener('touchstart', startSong);
+    document.addEventListener('keydown',    startSong);
+    document.addEventListener('mousemove',  startSong);
+
+    // Mute / unmute toggle
+    musicBtn.addEventListener('click', function (e) {
+      e.stopPropagation(); // don't double-trigger startSong
+      if (!songStarted) {
+        startSong();
+        return;
+      }
+      if (loveSong.paused) {
+        loveSong.play();
+        musicBtn.textContent = '🔊';
+      } else {
+        loveSong.pause();
+        musicBtn.textContent = '🔇';
+      }
+    });
 
     /* ── 1. Floating hearts ── */
     (function () {
