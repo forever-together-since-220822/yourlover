@@ -196,7 +196,7 @@
     <!-- Celebration shown after Yes -->
     <div id="celebrate-art"></div>
 
-    <!-- ✏️ YOUR PHOTO: Replace YOUR_IMAGE_URL_HERE with your image path or URL -->
+    <!-- ✏️ YOUR PHOTO: Replace us.jpeg with your image path or URL -->
     <div id="photo-section">
       <div id="photo-frame">
         <img id="your-photo" src="us.jpeg" alt="Our photo" />
@@ -209,7 +209,10 @@
       <button class="btn" id="btn-no">No 🙅</button>
     </div>
   </div>
-  <audio id="loveSong" src="song.mp3" preload="auto"></audio>
+
+  <!-- ✏️ Replace song.mp3 with your audio file path -->
+  <audio id="loveSong" src="song.mp3" preload="auto" loop></audio>
+
   <script>
     const loveSong = document.getElementById('loveSong');
 
@@ -234,7 +237,6 @@
     let hasFloated = false;
 
     function moveNoButton() {
-      // First time: switch to fixed and jump away
       if (!hasFloated) {
         hasFloated = true;
         noBtn.classList.add('floating');
@@ -257,22 +259,23 @@
 
     /* ── 3. Yes button — celebration ── */
     function sayYes() {
-      loveSong.play();
+      // Play song
+      loveSong.play().catch(() => {});
 
       // Update text
       document.getElementById('heading').textContent = 'Yay!! You just made me the happiest! 🥰';
       document.getElementById('message').textContent = "Lol itne mehant se ek website banaya i mean mehnat nhi aadha mene aadha ai i mean mujhe web dev me itna interest nhi h isliye tere liye banaya but that a side i love you very much, ik mein jyada bolta nhi hu but i do and ik tujhe valentine cringe lagta h but unfortunately mujhe nhi lagta and just moment of appreciation ki thank you mere saath itne time se rehne ke liye even though mein bhot awkward chize bolta hu but still at the end jo bhi bolta hu woh tere siwa kisike saaath karna nhi chata only you because i can never imagine myself somebody else mujhe tujhe hasana bhot pasnd h tera laugh sunne ko itna satisfing lagta h puch maat i mean love everything about you and subh jo bolne wala tha woh bhi toda awkward tha ki i miss your smell but socha tujhe cringe lagega isliye bola nhi and toda do choti me ek do photo mil jata toh maja aa jata mujhe ek video chaiye actually jisme tu ye banaye and mujhe aage piche upar se dekhna h kyuki tu mere ankho ke samne toh kabhi karegi nhi baki toh thike your choice but at the i just wanted to say i love you very much and itna anxious maat raha kar ek hi life me usme bhi itna anxiety me rehgi toh kya faida and kuch bhi ho i will always be their for you and i will never leave your side and mein itna kuch karta hu haar saal ek din i will become out of ideas but i hope uske baad bhi hum dono saath me rahe and i mean i am sorry agar tujhe gussa aaya toh but i wish hum dono ka ek ek dusre ko kiss karte hue photo hota toh accha hota.";
 
       // Swap heart for celebration
-      document.getElementById('heart-art').style.display    = 'none';
+      document.getElementById('heart-art').style.display = 'none';
       document.getElementById('celebrate-art').classList.add('show');
 
-      // Show photo upload
+      // Show photo
       document.getElementById('photo-section').classList.add('show');
 
       // Update Yes button
       const yesBtn = document.getElementById('btn-yes');
-      yesBtn.textContent        = 'Forever 💍';
+      yesBtn.textContent         = 'Forever 💍';
       yesBtn.style.pointerEvents = 'none';
 
       // Hide No button
@@ -290,9 +293,9 @@
         el.className = 'confetti-piece';
         const size   = 6 + Math.random() * 10;
         const roll   = Math.random();
-        el.style.background       = colors[Math.floor(Math.random() * colors.length)];
-        el.style.left             = Math.random() * 100 + 'vw';
-        el.style.top              = '-20px';
+        el.style.background        = colors[Math.floor(Math.random() * colors.length)];
+        el.style.left              = Math.random() * 100 + 'vw';
+        el.style.top               = '-20px';
         el.style.animationDuration = (1.5 + Math.random() * 2.5) + 's';
         el.style.animationDelay    = (Math.random() * 0.8) + 's';
         if (roll < 0.33) {
@@ -302,17 +305,14 @@
           el.style.width = el.style.height = size + 'px';
           el.style.borderRadius = '2px';
         } else {
-          el.style.width = '4px';
+          el.style.width  = '4px';
           el.style.height = (10 + Math.random() * 14) + 'px';
         }
         document.body.appendChild(el);
         el.addEventListener('animationend', () => el.remove());
       }
     }
-
   </script>
 
 </body>
-
 </html>
-
