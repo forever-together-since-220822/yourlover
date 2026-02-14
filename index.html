@@ -194,7 +194,7 @@
     <span id="heart-art">🩷</span>
 
     <!-- Celebration shown after Yes -->
-    <div id="celebrate-art"></div>
+    <div id="celebrate-art">🥰💍✨</div>
 
     <!-- ✏️ YOUR PHOTO: Replace us.jpeg with your image path or URL -->
     <div id="photo-section">
@@ -215,6 +215,17 @@
 
   <script>
     const loveSong = document.getElementById('loveSong');
+
+    // Play song on first interaction anywhere on the page (bypasses browser autoplay block)
+    function startSong() {
+      loveSong.currentTime = 0;
+      loveSong.volume = 1;
+      loveSong.play().catch(() => {});
+      document.removeEventListener('click',     startSong);
+      document.removeEventListener('touchstart', startSong);
+    }
+    document.addEventListener('click',      startSong);
+    document.addEventListener('touchstart', startSong);
 
     /* ── 1. Floating hearts ── */
     (function () {
@@ -241,13 +252,18 @@
         hasFloated = true;
         noBtn.classList.add('floating');
       }
-      const margin = 20;
-      const bw = noBtn.offsetWidth  || 100;
-      const bh = noBtn.offsetHeight || 48;
-      const x  = Math.max(margin, Math.floor(Math.random() * (window.innerWidth  - bw - margin)));
-      const y  = Math.max(margin, Math.floor(Math.random() * (window.innerHeight - bh - margin)));
-      noBtn.style.left = x + 'px';
-      noBtn.style.top  = y + 'px';
+      // Wait one frame so offsetWidth/Height are correct after position:fixed kicks in
+      requestAnimationFrame(() => {
+        const margin = 24;
+        const bw = noBtn.offsetWidth  || 120;
+        const bh = noBtn.offsetHeight || 48;
+        const maxX = window.innerWidth  - bw - margin;
+        const maxY = window.innerHeight - bh - margin;
+        const x = margin + Math.floor(Math.random() * Math.max(1, maxX - margin));
+        const y = margin + Math.floor(Math.random() * Math.max(1, maxY - margin));
+        noBtn.style.left = x + 'px';
+        noBtn.style.top  = y + 'px';
+      });
     }
 
     noBtn.addEventListener('mouseenter', moveNoButton);
@@ -259,8 +275,6 @@
 
     /* ── 3. Yes button — celebration ── */
     function sayYes() {
-      // Play song
-      loveSong.play().catch(() => {});
 
       // Update text
       document.getElementById('heading').textContent = 'Yay!! You just made me the happiest! 🥰';
